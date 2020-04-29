@@ -1,0 +1,4 @@
+** Themeの変更について
+
+- このあたりが参考になる
+  - http://jekyllrb-ja.github.io/docs/themes/
