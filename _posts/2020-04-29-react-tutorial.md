@@ -368,6 +368,98 @@ $ yarn add --dev jest@25.4.0
 
 #### テストコードを書くまで
 
+/src直下に以下のようなファイルを作る。
+create react app で作成したプロジェクトの場合、ここに置けば自動で読み込んでくれる。
+それ以外の場合は、package.json？あたりにsetupFileのパスを設定してあげれば良いと思う。
 
+ref.
+- <https://github.com/enzymejs/enzyme/issues/1265#issuecomment-336740161>
+- <https://github.com/enzymejs/enzyme/issues/1265#issuecomment-336872722>
 
-### 実際のテストコード
+**/src/setupTests.js**
+
+```js
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+configure({ adapter: new Adapter() });
+```
+
+#### テストコードを書く場所
+
+テストコードは、テストしたいコンポーネントがあるディレクトリに `__tests__` ディレクトリを切り、その中に作成する。
+具体的には下記のような感じに配置する。
+
+```
+├── components
+│   ├── Board.jsx
+│   ├── Game.jsx
+│   ├── Square.jsx
+│   └── __tests__
+│       ├── Board.test.jsx
+│       ├── Game.test.jsx
+│       └── Square.test.jsx
+├── index.css
+├── index.js
+└── setupTests.js
+```
+
+#### 実際のテストコード
+
+Squareコンポーネントを例に取る。
+Ruby の Rspec を書いたことがある人であれば、すんなり理解できると思う。
+
+**Square**
+
+```jsx
+import React from 'react';
+
+// shallow関数は、引数に渡されたReactコンポーネントのみをテストするために使う。
+import { shallow } from 'enzyme';
+
+import Square from '../Square';
+
+describe('<Square />', () => {
+  const propsValue = 'sample text';
+
+  // mock関数
+  const onClickFunction = jest.fn();
+  const props = {
+    value: propsValue,
+    onClick: onClickFunction,
+  };
+
+  // こうすることでテストのための便利な関数等が使えるようになる
+  const wrapper = shallow(<Square {...props} />);
+
+  it('text is equal props value.', () => {
+    expect(wrapper.text()).toEqual(propsValue);
+  });
+
+  it('when click, onClick function is called.', () => {
+    // コンポーネントをクリックする
+    wrapper.simulate('click');
+
+    // onClickFunctionが呼ばれることを確認する
+    expect(onClickFunction).toBeCalled();
+  });
+});
+```
+
+- `console.log(wrapper.debug())` で中身が見れるので、うまくテストが通らないとき等に使うと良い
+  - styled-component を使用すると、指定した名前と変わってしまっていることがある。
+
+## 最後に
+
+- 冒頭でもリンクを載せたが、そんなこんなで最終的に出来上がったコードがこちら
+  - <https://github.com/ckona/tic-tac-toe-with-react>
+- チュートリアル終わった後でも色々とやれることはあるなー。
+
+## 参考
+
+- [Reactチュートリアル](https://ja.reactjs.org/tutorial/tutorial.html)
+- [Jest](https://jestjs.io/ja/)
+- [Enzyme](https://enzymejs.github.io/enzyme/)
+  - setupFileの置き場所について
+    - <https://github.com/enzymejs/enzyme/issues/1265#issuecomment-336740161>
+    - <https://github.com/enzymejs/enzyme/issues/1265#issuecomment-336872722>
