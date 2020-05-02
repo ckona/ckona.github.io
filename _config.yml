@@ -19,6 +19,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   技術ブログ、雑記
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
+destination: _site
 twitter_username: pagu_o28
 github_username: ckona
 
@@ -39,3 +40,6 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+exclude:
+  - vendor
+  - _posts/*.org

@@ -2,3 +2,30 @@
 
 - このあたりが参考になる
   - http://jekyllrb-ja.github.io/docs/themes/
+
+** Org mode で書いて公開する
+
+*** 前提
+
+- Emacsの **ox-qmd** というパッケージ
+  - https://github.com/0x60df/ox-qmd
+  - すごく助かっている
+
+*** 手順
+
+- **/_posts/** 以下に **yyyy-mm-dd-blog_title.org** ファイルを作成する
+- YAML Front matter を設定するため、ファイルの先頭に下記を記入
+
+#+BEGIN_SRC
+#+TITLE: Blog Title
+#+LAYOUT: post
+#+TAGS: jekyll org-mode "tag with spaces"
+#+END_SRC
+
+- Org形式で気持ちよく記入
+- Orgファイル上で、 **C-c C-e or M-x org-export-dispatch** を実行
+  - Export to Qiita Markdown -> To File を選択
+- Orgファイルと同じディレクトリにmarkdownファイルが生成される
+- **bundle exec jekyll b** でbuild → **bundle exec jekyll s** で確認
+  - _config.yml の exclude 設定で _posts/*.org ファイルをbuild対象外にしているため、出力されたmarkdown形式ファイルが公開対象となる
+- 問題なさそうであればOK
