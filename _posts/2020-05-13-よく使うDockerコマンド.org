@@ -2,7 +2,7 @@
 #+LAYOUT: post
 #+TAGS: Docker
 
-** image
+** ■ image
 
 *** 一覧
 
@@ -28,7 +28,6 @@ docker image pull image[:tag]
 docker image push image[:tag]
 #+END_SRC
 
-
 *** ビルド
 
 #+BEGIN_SRC
@@ -51,9 +50,9 @@ docker image prune
 使われていないimageを一括削除する強烈コマンド。
 
 
-** container
+** ■ container
 
-**** 作成・実行
+*** 作成・実行
 
 #+BEGIN_SRC shell
 docker container run image[:tag] [command]
@@ -70,7 +69,7 @@ docker container run image[:tag] [command]
 - rm: コンテナ実行後、コンテナを破棄する
 - v: ホストとコンテナ間でファイルを共有する
 
-**** 一覧
+*** 一覧
 
 #+BEGIN_SRC
 docker container ls
@@ -81,7 +80,7 @@ docker container ls
   - e.g. --filter "name=hoge"
   - パイプ grep するほうが早そう
 
-**** 停止
+*** 停止
 
 #+BEGIN_SRC
 docker container stop [id-or-name]
@@ -89,14 +88,13 @@ docker container stop [id-or-name]
 
 - docker container stop $(docker container ls -q) でactiveなコンテナ全削除できる。イディオム的な。
 
-
-**** 再起動
+*** 再起動
 
 #+BEGIN_SRC
 docker container restart [id-or-name]
 #+END_SRC
 
-**** 破棄
+*** 破棄
 
 #+BEGIN_SRC
 docker container rm [id-or-name]
@@ -110,13 +108,14 @@ docker container prune
 
 - 停止状態のコンテナを一括削除する強烈コマンド
 
-** ログ
+
+** ■ ログ
 
 #+BEGIN_SRC shell
 docker container logs [id-or-name]
 #+END_SRC
 
-** コマンド実行
+** ■ コマンド実行
 
 #+BEGIN_SRC shell
 docker container exec [id-or-name] [command]
@@ -126,10 +125,16 @@ docker container exec [id-or-name] [command]
 - t: 仮想端末を有効にする
   - sshログインぽく操作できる
 
-** ファイルコピー
+** ■ ファイルコピー
 
 #+BEGIN_SRC shell
 docker container cp A B
 #+END_SRC
 
 - scpとたぶん同じ
+
+** ■ Info
+
+#+BEGIN_SRC shell
+docker container stats
+#+END_SRC
