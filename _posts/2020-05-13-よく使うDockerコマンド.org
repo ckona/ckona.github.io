@@ -1,0 +1,135 @@
+#+TITLE: よく使うDockerコマンド
+#+LAYOUT: post
+#+TAGS: Docker
+
+** image
+
+*** 一覧
+
+#+BEGIN_SRC
+docker image ls
+#+END_SRC
+
+*** タグ付け
+
+#+BEGIN_SRC
+docker image tag old-image[:tag] new-image[:tag]
+#+END_SRC
+
+*** 取得
+
+#+BEGIN_SRC
+docker image pull image[:tag]
+#+END_SRC
+
+*** 公開
+
+#+BEGIN_SRC
+docker image push image[:tag]
+#+END_SRC
+
+
+*** ビルド
+
+#+BEGIN_SRC
+docker image build -t image[:tag] Dockerfile-path
+#+END_SRC
+
+- t: イメージ名とタグ名を指定する
+- f: Dockerfile名
+  - デフォルトでは ~Dockerfile~ という名前のファイルを探しに行く。異なるファイル名で実行したいときはこのオプションを付与する。
+  - e.g. MyDockerfile等
+- pull: true を設定するとリモートリポジトリからイメージを持ってくる
+  - localにあるimageを使用しない
+
+*** 破棄
+
+#+BEGIN_SRC shell
+docker image prune
+#+END_SRC
+
+使われていないimageを一括削除する強烈コマンド。
+
+
+** container
+
+**** 作成・実行
+
+#+BEGIN_SRC shell
+docker container run image[:tag] [command]
+#+END_SRC
+
+- e.g. docker container run hoge:8.0 bash
+
+- d: バックグラウンド起動
+- p: ポート設定
+  - e.g. -p 13000:3000 でlocalの13000番ポートにアクセスしたらdocker network内の3000番ポートにアクセスする（ポートフォワーディング）
+- name: 名前をつける
+- i: 標準入力つなぎっぱなしにする
+- t: 仮想端末を有効にする
+- rm: コンテナ実行後、コンテナを破棄する
+- v: ホストとコンテナ間でファイルを共有する
+
+**** 一覧
+
+#+BEGIN_SRC
+docker container ls
+#+END_SRC
+
+- q: コンテナIDを取得
+- filter: フィルタリングする
+  - e.g. --filter "name=hoge"
+  - パイプ grep するほうが早そう
+
+**** 停止
+
+#+BEGIN_SRC
+docker container stop [id-or-name]
+#+END_SRC
+
+- docker container stop $(docker container ls -q) でactiveなコンテナ全削除できる。イディオム的な。
+
+
+**** 再起動
+
+#+BEGIN_SRC
+docker container restart [id-or-name]
+#+END_SRC
+
+**** 破棄
+
+#+BEGIN_SRC
+docker container rm [id-or-name]
+#+END_SRC
+
+- f: activeなコンテナも強制的に削除
+
+#+BEGIN_SRC shell
+docker container prune
+#+END_SRC
+
+- 停止状態のコンテナを一括削除する強烈コマンド
+
+** ログ
+
+#+BEGIN_SRC shell
+docker container logs [id-or-name]
+#+END_SRC
+
+** コマンド実行
+
+#+BEGIN_SRC shell
+docker container exec [id-or-name] [command]
+#+END_SRC
+
+- i: 標準入力繋ぎっぱなしにする
+- t: 仮想端末を有効にする
+  - sshログインぽく操作できる
+
+** ファイルコピー
+
+#+BEGIN_SRC shell
+docker container cp A B
+#+END_SRC
+
+- scpとたぶん同じ
